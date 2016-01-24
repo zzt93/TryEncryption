@@ -1,7 +1,13 @@
 package bl;
 
+import bl.crypt.Crypt;
 import data.AccountInfo;
+import data.AccountMapper;
 
+import javax.crypto.NoSuchPaddingException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -10,20 +16,42 @@ import java.util.ArrayList;
  * Usage:
  */
 public class AccountBL {
-    private static AccountBL ourInstance = new AccountBL();
+    private static AccountBL ourInstance;
 
-    public static AccountBL getInstance() {
+
+    private AccountMapper accountMapper;
+    private Crypt crypt;
+
+    public static AccountBL getInstance(String pw) {
+        if (ourInstance == null) {
+            ourInstance = new AccountBL(pw);
+        }
         return ourInstance;
     }
 
-    private AccountBL() {
+    private AccountBL(String pw) {
+        try {
+            crypt = new Crypt(pw);
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | KeyStoreException e) {
+            e.printStackTrace();
+        }
+        try {
+            accountMapper = new AccountMapper();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void add(AccountInfo accountInfo) {
-
+    public boolean add(AccountInfo accountInfo) throws SQLException, NoSuchAlgorithmException {
+        accountInfo.encrypt(crypt);
+        return accountMapper.add(accountInfo);
     }
 
-    public ArrayList<AccountInfo> showAll() {
-        return null;
+    public ArrayList<AccountInfo> showAll() throws SQLException, NoSuchAlgorithmException {
+        ArrayList<AccountInfo> all = accountMapper.findAll();
+        for (AccountInfo accountInfo : all) {
+            accountInfo.decrypt(crypt);
+        }
+        return all;
     }
 }

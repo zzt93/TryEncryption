@@ -6,6 +6,8 @@ import data.AccountInfo;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 /**
  * Created by zzt on 1/23/16.
@@ -26,7 +28,11 @@ public class Add {
                 AccountInfo accountInfo = new AccountInfo(site.getText(),
                         account.getText(), password.getText());
 
-                AccountBL.getInstance().add(accountInfo);
+                try {
+                    AccountBL.getInstance(Main.pw).add(accountInfo);
+                } catch (SQLException | NoSuchAlgorithmException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
     }

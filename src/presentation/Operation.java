@@ -6,6 +6,8 @@ import data.AccountInfo;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -20,9 +22,6 @@ public class Operation {
 
 
     public Operation() {
-        AccountBL accountBL = AccountBL.getInstance();
-        ArrayList<AccountInfo> accountInfos = accountBL.showAll();
-
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,4 +34,21 @@ public class Operation {
         Main.setFramePane(new Operation().operation);
     }
 
+    private void createUIComponents() {
+        AccountBL accountBL = AccountBL.getInstance(Main.pw);
+        ArrayList<AccountInfo> accountInfos;
+        try {
+            accountInfos = accountBL.showAll();
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return;
+        }
+        String[] colName = {"Site", "Account", "Password"};
+        String[][] data = new String[accountInfos.size()][];
+        for (int i = 0; i < accountInfos.size(); i++) {
+            AccountInfo accountInfo = accountInfos.get(i);
+            data[i] = new String[]{accountInfo.getSite(), accountInfo.getAccount(), accountInfo.getPassword()};
+        }
+        infos = new JTable(data, colName);
+    }
 }

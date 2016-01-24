@@ -14,12 +14,13 @@ public class Main {
     private JTextField masterPW;
     private JPanel mainView;
     public static JFrame frame;
+    public static String pw;
 
     public Main() {
         masterPW.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String pw = masterPW.getText();
+                pw = masterPW.getText();
                 Ensure.startEnsure(pw);
             }
         });
