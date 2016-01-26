@@ -33,6 +33,7 @@ public class Add {
                 } catch (SQLException | NoSuchAlgorithmException e1) {
                     e1.printStackTrace();
                 }
+                Operation.start();
             }
         });
     }

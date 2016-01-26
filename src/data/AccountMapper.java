@@ -46,8 +46,9 @@ public class AccountMapper {
 
     public boolean add(AccountInfo info) throws SQLException {
         Statement statement = connection.createStatement();
-        return statement.execute("INSERT INTO account (site, account, pw) VALUES (" +
-                info.getSite() + ", " + info.getAccount() + ", " + info.getPassword() +
-                ");");
+        return statement.execute("INSERT INTO account VALUES ('" +
+                info.getSite() + "', '" +
+                info.getAccount() + "', '" +
+                info.getPassword() + "');");
     }
 }

@@ -19,6 +19,7 @@
             <constraints/>
             <properties>
               <autoCreateRowSorter value="true"/>
+              <cellSelectionEnabled value="true"/>
             </properties>
             <clientProperties>
               <Table.isFileList class="java.lang.Boolean" value="false"/>

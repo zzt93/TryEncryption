@@ -12,8 +12,7 @@ import java.util.Properties;
  */
 public class ConnectionManager {
     /**
-     * The java.sql.Connection object represents a single logical database connection;
-     * It is important to note that a
+     * The java.sql.Connection object represents a single logical database connection; It is important to note that a
      * Connection object is thread-safe and can be shared between threads without the need for additional
      * synchronization. On the other hand, a Statement object (created from a Connection object) is not thread-safe
      */
@@ -37,13 +36,13 @@ public class ConnectionManager {
         connectionProps.put("password", ConnectionManager.password);
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            //            Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(
                     "jdbc:" + ConnectionManager.dbms + "://" +
                             ConnectionManager.serverName +
-                            ":" + ConnectionManager.portNumber + "/" + ENCRYPTION,
+                            ":" + ConnectionManager.portNumber + "/" + ENCRYPTION + "?useUnicode=true&characterEncoding=UTF-8",
                     connectionProps);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         System.out.println("Connected to database");

@@ -86,8 +86,8 @@ public class Crypt {
         return "";
     }
 
-    public String decrypt(String s) throws NoSuchAlgorithmException {
-        try {
+    public String decrypt(String s) throws NoSuchAlgorithmException, UnsupportedEncodingException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException, NoSuchPaddingException {
+
             String[] split = s.split("" + CHAR_NOT_BASE64);
             if (split.length != 3) {
                 throw new IllegalArgumentException("decrypt string is broken");
@@ -101,13 +101,8 @@ public class Crypt {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(iv));
 
             byte[] textDecrypted = cipher.doFinal(encryptText);
-            String str = new String(textDecrypted, Default.ENCODING_UTF8);
-            System.out.println(str);
-            return str;
-        } catch (BadPaddingException | UnsupportedEncodingException | IllegalBlockSizeException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException e) {
-            e.printStackTrace();
-        }
-        return "";
+            return new String(textDecrypted, Default.ENCODING_UTF8);
+
     }
 
     public static void main(String[] args) {
@@ -116,7 +111,7 @@ public class Crypt {
             crypt = new Crypt("1234567890");
             String encrypt = crypt.encrypt("a message");
             System.out.println(crypt.decrypt(encrypt));
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | KeyStoreException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | KeyStoreException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }

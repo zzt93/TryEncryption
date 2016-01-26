@@ -2,6 +2,12 @@ package data;
 
 import bl.crypt.Crypt;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -37,7 +43,7 @@ public class AccountInfo {
         password = crypt.encrypt(password);
     }
 
-    public void decrypt(Crypt crypt) throws NoSuchAlgorithmException {
+    public void decrypt(Crypt crypt) throws NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, NoSuchPaddingException, InvalidAlgorithmParameterException {
         password = crypt.decrypt(password);
     }
 
